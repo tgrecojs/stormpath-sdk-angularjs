@@ -96,7 +96,7 @@ angular.module('stormpath.CONFIG',[])
     * }
     * ```
     */
-    AUTHENTICATION_ENDPOINT: '/oauth/token',
+    AUTHENTICATION_ENDPOINT: '/login',
 
 
     /**
@@ -116,7 +116,7 @@ angular.module('stormpath.CONFIG',[])
     *  if the user has an active session.
     *  * Respond with `401 Unauthorized` if the user has no session.
     */
-    CURRENT_USER_URI: '/api/users/current',
+    CURRENT_USER_URI: '/me',
 
 
     /**
@@ -350,7 +350,7 @@ angular.module('stormpath.CONFIG',[])
     /**
     * @ngdoc property
     *
-    * @name USER_COLLECTION_URI
+    * @name REGISTRATION_URI
     *
     * @propertyOf stormpath.STORMPATH_CONFIG:STORMPATH_CONFIG
     *
@@ -363,7 +363,7 @@ angular.module('stormpath.CONFIG',[])
     * to POST new users.  This endpoint MUST accept a stormpath account object
     * and use Stormpath to create the new user.
     */
-    USER_COLLECTION_URI: '/api/users'
+    REGISTRATION_URI: '/register'
   };
   c.getUrl = function(key) {
     return this.ENDPOINT_PREFIX + this[key];

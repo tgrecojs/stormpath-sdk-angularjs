@@ -92,10 +92,7 @@ angular.module('stormpath.auth',['stormpath.CONFIG'])
             url: STORMPATH_CONFIG.getUrl('AUTHENTICATION_ENDPOINT'),
             method: 'POST',
             withCredentials: true,
-            data: data,
-            params: {
-              'grant_type': 'password'
-            }
+            data: data
           })
         );
         var op2 = op.then(cacheCurrentUser).then(authenticatedEvent);

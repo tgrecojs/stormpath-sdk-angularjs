@@ -31,7 +31,7 @@ angular.module('stormpath')
             }
           })
           .catch(function(response){
-            $scope.error = response.data.errorMessage;
+            $scope.error = response.data.error;
           })
           .finally(function(){
             $scope.authenticating = false;
@@ -43,7 +43,7 @@ angular.module('stormpath')
       })
       .catch(function(response){
         $scope.creating = false;
-        $scope.error = response.data.errorMessage;
+        $scope.error = response.data.error;
       });
   };
 }])

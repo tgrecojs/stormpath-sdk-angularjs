@@ -140,7 +140,7 @@ angular.module('stormpath.userService',['stormpath.CONFIG'])
          *
          * Attempts to create a new user by submitting the given `accountData` as
          * JSON to `/api/users`.  The POST endpoint can be modified via the
-         * {@link stormpath.config#USER_COLLECTION_URI USER_COLLECTION_URI} config option.
+         * {@link stormpath.config#REGISTRATION_URI REGISTRATION_URI} config option.
          *
          * This method expects a `201` response if the account does NOT require email
          * verification.
@@ -171,7 +171,7 @@ angular.module('stormpath.userService',['stormpath.CONFIG'])
         var op = $q.defer();
 
         $http($spFormEncoder.formPost({
-            url: STORMPATH_CONFIG.getUrl('USER_COLLECTION_URI'),
+            url: STORMPATH_CONFIG.getUrl('REGISTRATION_URI'),
             method: 'POST',
             data: accountData
           }))

@@ -105,7 +105,7 @@ SDKs will have convenience methods for these APIs.
       <p>Used to create new Stormpath accounts</p>
     </td>
     <td>
-      {@link api/stormpath.STORMPATH_CONFIG:STORMPATH_CONFIG#properties_user_collection_uri USER_COLLECTION_URI}
+      {@link api/stormpath.STORMPATH_CONFIG:STORMPATH_CONFIG#properties_user_collection_uri REGISTRATION_URI}
     </td>
     <td>
       [Account Creation](http://docs.stormpath.com/rest/product-guide/#create-an-account)
