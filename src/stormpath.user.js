@@ -176,7 +176,7 @@ angular.module('stormpath.userService',['stormpath.CONFIG'])
             data: accountData
           }))
           .then(function(response){
-            op.resolve(response.status===201);
+            op.resolve(response.data && response.data.status==='ENABLED');
           },op.reject);
         return op.promise;
       };

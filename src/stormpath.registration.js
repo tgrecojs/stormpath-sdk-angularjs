@@ -22,7 +22,7 @@ angular.module('stormpath')
         if(enabled && $scope.autoLogin){
           $scope.authenticating = true;
           $auth.authenticate({
-            username: $scope.formModel.email,
+            login: $scope.formModel.email,
             password: $scope.formModel.password
           })
           .then(function(){
