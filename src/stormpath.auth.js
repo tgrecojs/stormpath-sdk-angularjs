@@ -34,7 +34,7 @@ angular.module('stormpath.auth',['stormpath.CONFIG'])
    * "logging in" the user.
    */
   var authServiceProvider = {
-    $get: ['$http','$user','$rootScope','$spFormEncoder',function authServiceFactory($http,$user,$rootScope,$spFormEncoder){
+    $get: ['$http','$user','$rootScope','$spFormEncoder','$q',function authServiceFactory($http,$user,$rootScope,$spFormEncoder,$q){
 
       function AuthService(){
         return this;
@@ -107,15 +107,53 @@ angular.module('stormpath.auth',['stormpath.CONFIG'])
         return op2;
 
       };
-
+      /**
+       * @ngdoc function
+       *
+       * @name  stormpath.authService.$auth#endSession
+       *
+       * @methodOf stormpath.authService.$auth
+       *
+       * @returns {promise}
+       *
+       * A promise that is resolved if logout is successful, or rjected with
+       * an $http error response if there was an error.
+       *
+       * @description
+       *
+       * Log out the user.
+       *
+       * Makes an HTTP reuest to
+       * {@link api/stormpath.STORMPATH_CONFIG:STORMPATH_CONFIG#properties_destroy_session_endpoint DESTROY_SESSION_ENDPOINT}
+       *
+       * This method is called when you click an element that has the
+       * {@link stormpath.spLogout:spLogout spLogout} directive on it.
+       *
+       * @example
+       *
+       * <pre>
+       * myApp.controller('LogoutController', function ($scope, $auth, $state) {
+       *   $scope.logout = function login(formData){
+       *     $auth.endSession(formData)
+       *      .then(function(){
+       *        console.log('you have logged out');
+       *        $state.go('home');
+       *      })
+       *      .catch(function(httpResponse){
+       *        console.log('there was a problem with the logout request');
+       *      });
+       *   }
+       *
+       * });
+       * </pre>
+       */
       AuthService.prototype.endSession = function endSession(){
-        var op = $http.get(STORMPATH_CONFIG.getUrl('DESTROY_SESSION_ENDPOINT'));
-        op.then(function(){
+        var op = $q.defer();
+        $http.get(STORMPATH_CONFIG.getUrl('DESTROY_SESSION_ENDPOINT')).then(function(){
           $rootScope.$broadcast(STORMPATH_CONFIG.SESSION_END_EVENT);
-        },function(response){
-          console.error('logout error',response);
-        });
-        return op;
+          op.resolve();
+        },op.reject);
+        return op.promise;
       };
 
       function cacheCurrentUser(){

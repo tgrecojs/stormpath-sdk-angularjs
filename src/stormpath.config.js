@@ -230,6 +230,9 @@ angular.module('stormpath.CONFIG',[])
     GET_USER_EVENT: '$currentUser',
 
 
+    LOGIN_VIEW_NAME: 'login',
+
+
     /**
     * @ngdoc property
     *
@@ -306,7 +309,7 @@ angular.module('stormpath.CONFIG',[])
     *
     * The name of the event that is fired when the user logs out via the
     * {@link stormpath.spLogout:spLogout spLogout}
-    * directive
+    * directive, or when a 401 response is encounted by an API request.
     */
     SESSION_END_EVENT: '$sessionEnd',
 

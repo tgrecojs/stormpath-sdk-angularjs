@@ -84,13 +84,25 @@
  * </pre>
  */
 angular.module('stormpath',['stormpath.CONFIG','stormpath.auth','stormpath.userService'])
-.factory('SpAuthInterceptor',[function(){
+.factory('SpAuthInterceptor',['STORMPATH_CONFIG','$injector','$q','$rootScope',function(STORMPATH_CONFIG,$injector,$q,$rootScope){
   function SpAuthInterceptor(){
 
   }
   SpAuthInterceptor.prototype.request = function(config){
     config.withCredentials=true;
     return config;
+  };
+  SpAuthInterceptor.prototype.responseError = function( response ) {
+    if( response.status === 401 && response.config.url !== STORMPATH_CONFIG.CURRENT_USER_URI ) {
+      $rootScope.$broadcast(STORMPATH_CONFIG.SESSION_END_EVENT);
+      var state = $injector.get('$state');
+      if(state){
+        state.transitionTo(STORMPATH_CONFIG.LOGIN_VIEW_NAME);
+      }
+      return $q.reject(response);
+    } else {
+      return $q.reject(response);
+    }
   };
 
   return new SpAuthInterceptor();
@@ -772,7 +784,8 @@ angular.module('stormpath',['stormpath.CONFIG','stormpath.auth','stormpath.userS
  *
  * @description
  *
- * This directive adds a click handler to the element.  When clicked, the user will be logged out.
+ * This directive adds a click handler to the element.  When clicked, the user
+ * will be logged out.
  *
  * @example
  *
@@ -780,11 +793,11 @@ angular.module('stormpath',['stormpath.CONFIG','stormpath.auth','stormpath.userS
  *   <a ui-sref="main" sp-logout>Logout</a>
  * </pre>
  */
-.directive('spLogout',['$auth',function($auth){
+.directive('spLogout',['$auth','$state',function($auth,$state){
   return{
     link: function(scope,element){
       element.on('click',function(){
-        $auth.endSession();
+        $auth.endSession().then($state.reload);
       });
     }
   };
